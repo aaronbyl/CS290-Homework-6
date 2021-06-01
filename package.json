@@ -1,0 +1,16 @@
+{
+  "name": "Homework-6",
+  "version": "1.0.0",
+  "description": "CS290 Spring 2021 Homework6",
+  "main": "homework6.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aaron Byl",
+  "license": "N/A",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.2",
+    "mysql": "^2.8.0"
+  }
+}
