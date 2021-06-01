@@ -20,9 +20,26 @@ app.get('/reset-table',function(req,res,next){
     "date DATE,"+
     "lbs BOOLEAN)";
     mysql.pool.query(createString, function(err){
+      if(err){
+        next(err);
+        return;
+      }
       context.results = "Table reset";
-      res.render('home',context);
+      res.send(context);
     })
+  });
+});
+
+app.get('/insert-test',function(req,res,next){
+  var context = {};
+  var sql = "INSERT INTO workouts ('name', 'reps', 'weight', 'date', 'lbs') VALUES ('Aaron', 5, 200, '2021-05-28', 1)";
+  mysql.pool.query(sql, function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    context.results = "Inserted id " + result.insertId;
+    res.send(context);
   });
 });
 
