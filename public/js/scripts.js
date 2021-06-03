@@ -59,7 +59,7 @@ function AddWorkout () {
     reqObject.date = document.getElementById('date').value;
     //alert(JSON.stringify(reqObject));
     var req = new XMLHttpRequest();
-    req.open('POST', 'http://localhost:5635/addworkout', true);
+    req.open('POST', './addworkout', true);
     req.setRequestHeader('Content-Type', 'application/json');
     req.addEventListener('load', function() {
       if(req.status >= 200 && req.status < 400){ 
@@ -128,7 +128,7 @@ function UpdateWorkout () {
       reqObject.lbsFlag = document.getElementById(inputs[3].id).value;
       reqObject.date = document.getElementById(inputs[4].id).value;
       var req = new XMLHttpRequest();
-      req.open('POST', 'http://localhost:5635/updateworkout', true);
+      req.open('POST', './updateworkout', true);
       req.setRequestHeader('Content-Type', 'application/json');
       req.addEventListener('load', function() {
         if(req.status >= 200 && req.status < 400){ 
@@ -156,7 +156,7 @@ function DeleteWorkout () {
       var reqObject = {};
       reqObject.id = idNum;
       var req = new XMLHttpRequest();
-      req.open('POST', 'http://localhost:5635/deleteworkout', true);
+      req.open('POST', './deleteworkout', true);
       req.setRequestHeader('Content-Type', 'application/json');
       req.addEventListener('load', function() {
         if(req.status >= 200 && req.status < 400){ 
@@ -200,7 +200,7 @@ function BuildTable () {
   
   //send get request for current database table
   var req = new XMLHttpRequest();
-  req.open('GET', 'http://localhost:5635/workouts', true);
+  req.open('GET', './workouts', true);
   req.addEventListener('load', function() {
     if(req.status >= 200 && req.status < 400){ 
       var obj = JSON.parse(req.responseText);
