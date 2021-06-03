@@ -1,12 +1,60 @@
 var express = require('express');
-var path = require('path');
 var mysql = require('./dbcon.js');
 
 var app = express();
-app.set('port', 5635);
+var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+var bodyParser = require('body-parser');
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'));
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
+app.set('port', 5635);
+app.use('/public',express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get('/', function(req, res, next) {
+  res.render('home');
+});
+
+app.get('/workouts', function(req, res, next) {
+  var workoutObj = {};
+  mysql.pool.query('SELECT * FROM workouts', function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    workoutObj.results = JSON.stringify(rows);
+    workoutObj.rows = rows;
+    //console.log(workoutObj.results);
+    res.send(workoutObj);
+  });
+});
+
+app.post('/addworkout',function(req, res, next){
+  var context = {};
+  var sqlCmd = "INSERT INTO workouts(name, reps, weight, date, lbs) VALUES (?, ?, ?, ?, ?)";
+  mysql.pool.query(sqlCmd, [req.body.name, req.body.reps, req.body.weight, req.body.date, 
+  req.body.lbsFlag], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    //context.results = "Inserted id " + result.insertId;
+    //if no errors, select new id and return to client
+    console.log('result.insertId = ' + result.insertId);
+    
+    var newRow = {};
+    mysql.pool.query('SELECT * FROM workouts WHERE id=?', [result.insertId], function(err, rows, fields){
+      if(err){
+        next(err);
+        return;
+      }
+      newRow.results = JSON.stringify(rows);
+      newRow.rows = rows;
+      //console.log(newRow.results);
+      res.send(newRow);
+    });
+  });
 });
 
 app.get('/reset-table',function(req,res,next){
@@ -32,14 +80,27 @@ app.get('/reset-table',function(req,res,next){
 
 app.get('/insert-test',function(req,res,next){
   var context = {};
-  var sql = "INSERT INTO workouts ('name', 'reps', 'weight', 'date', 'lbs') VALUES ('Aaron', 5, 200, '2021-05-28', 1)";
+  var sql = "INSERT INTO workouts(`name`, `reps`, `weight`, `date`, `lbs`) VALUES ('Aaron', 2, 205, '2021-05-29', 0)";
   mysql.pool.query(sql, function(err, result){
     if(err){
       next(err);
       return;
     }
     context.results = "Inserted id " + result.insertId;
-    res.send(context);
+    console.log('result.insertId = ' + result.insertId);
+    
+    var newRow = {};
+    mysql.pool.query('SELECT * FROM workouts WHERE id=?', [result.insertId], function(err, rows, fields){
+      if(err){
+        next(err);
+        return;
+      }
+      newRow.results = JSON.stringify(rows);
+      newRow.rows = rows;
+      console.log(newRow.results);
+    
+      res.send(context);
+    });
   });
 });
 
