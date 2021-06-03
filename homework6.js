@@ -31,7 +31,6 @@ app.get('/workouts', function(req, res, next) {
 });
 
 app.post('/addworkout',function(req, res, next){
-  var context = {};
   var sqlCmd = "INSERT INTO workouts(name, reps, weight, date, lbs) VALUES (?, ?, ?, ?, ?)";
   mysql.pool.query(sqlCmd, [req.body.name, req.body.reps, req.body.weight, req.body.date, 
   req.body.lbsFlag], function(err, result){
@@ -57,7 +56,34 @@ app.post('/addworkout',function(req, res, next){
   });
 });
 
-app.get('/reset-table',function(req,res,next){
+app.post('/updateworkout',function(req, res, next){
+  var sqlCmd = "UPDATE workouts SET name=?, reps=?, weight=?, date=?, lbs=? WHERE id=?";
+  mysql.pool.query(sqlCmd, [req.body.name, req.body.reps, req.body.weight, req.body.date, 
+  req.body.lbsFlag, req.body.id], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    //context.results = "Inserted id " + result.insertId;
+    //if no errors, select new id and return to client
+    console.log('Updated ' + result.changedRows + ' rows.');
+  });
+});
+
+app.post('/deleteworkout',function(req, res, next){
+  var sqlCmd = "DELETE FROM workouts WHERE id=?";
+  mysql.pool.query(sqlCmd, [req.body.id], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    //context.results = "Inserted id " + result.insertId;
+    //if no errors, select new id and return to client
+    console.log('Deleted ' + result.affectedRows + ' rows.');
+  });
+});
+
+/*app.get('/reset-table',function(req,res,next){
   var context = {};
   mysql.pool.query("DROP TABLE IF EXISTS workouts", function(err){
     var createString = "CREATE TABLE workouts("+
@@ -102,7 +128,7 @@ app.get('/insert-test',function(req,res,next){
       res.send(context);
     });
   });
-});
+});*/
 
 app.use(function(req,res){
   res.type('text/plain');

@@ -1,7 +1,7 @@
 <!-- <h1>MySQL Results:</h1>
 <p>{{results}}</p> -->
 
-<form>
+<form id='addForm'>
   <label>Name</label>
   <input type='text' name='name' id='name'>
   <label>Reps</label>
@@ -20,35 +20,7 @@
 
 <h2 class="page-header">Workouts</h2>
 
-<div id='tableDiv'>
-<!--<table id='workoutTable'>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Reps</th>
-      <th>Weight</th>
-      <th>lbs/kg</th>
-      <th>Date</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  {{#each rows}}
-    <tr id='row{{this.id}}'>
-      <td id='cell{{this.id}}.name'>{{this.name}}</td>
-      <td id='cell{{this.id}}.reps'>{{this.reps}}</td>
-      <td id='cell{{this.id}}.weightFmt'>{{this.weightFmt}}</td>
-      <td id='cell{{this.id}}.lbs'>{{this.lbs}}</td>
-      <td id='cell{{this.id}}.date'>{{this.date}}</td>
-      <td id='cell{{this.id}}.btns'>
-        <input type='button' value='Edit' id='editRow{{this.id}}'>
-        <input type='button' value='Update' id='updateRow{{this.id}}' hidden>
-        <input type='button' value='Cancel' id='cancelRow{{this.id}}' hidden>
-        <input type='button' value='Delete' id='deleteRow{{this.id}}'>
-      </td>
-    </tr>
-  {{/each}}
-  </tbody>
-</table>-->
-</div>
-<h5 id='addWorkoutResult'>AddWorkout API Response:</h5>
+<form id='displayForm'>
+  <div id='tableDiv'>
+  </div>
+</form>
